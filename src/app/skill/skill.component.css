@@ -1,0 +1,80 @@
+.tabla, .tabla2{
+  text-align: center;
+  text-justify: auto;
+  border: 2px solid rgb(231, 219, 105);
+  box-shadow: -1px 1px 0 #000, 
+              1px 1px 0 #000, 
+              1px -1px 0 #000,
+              -1px -1px 0 #000; 
+}
+
+.card{
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgb(231, 219, 105);
+  box-shadow: -1px 1px 0 #000, 
+              1px 1px 0 #000, 
+              1px -1px 0 #000,
+              -1px -1px 0 #000;
+  /*backdrop-filter: blur(2px);*/
+}
+
+.custom-nav {
+  padding: 0;
+  padding-bottom: 0px !important;
+  background-color: rgb(231, 219, 105) !important;
+}
+
+table td {
+  vertical-align: middle !important;
+}
+
+table tr {
+  text-align: center !important;
+}
+
+.title{
+  font-weight: bolder;
+  color: rgb(231, 219, 105);
+  text-shadow: 1px 1.5px 1px rgba(0, 0, 0, 0.747);
+  font-size: 25px;
+}
+
+.filtro{
+  padding-bottom: 1px !important;
+}
+
+.dropdown-item:hover{
+  color: black;
+}
+
+.custom-button {
+  background-color: rgb(231, 219, 105);
+  border-color: rgb(231, 219, 105);
+  transition: all 0.1s ease-in;
+  color: white;
+  -webkit-transition: all 0.1s ease-in;
+  -moz-transition: all 0.1s ease-in;
+}
+
+.custom-button:hover {
+  background-color: rgb(190, 176, 47);
+  border-color: rgb(190, 176, 47);
+}
+
+.table thead th {
+  border-bottom: none;
+}
+
+.border-info {
+  border-color: rgb(231, 219, 105) !important;
+}
+
+.dropdown-divider {
+  border-color: rgb(231, 219, 105) !important;
+}
+
+.mx-5 {
+  margin-left: 5rem !important;
+  margin-right: 5rem !important;
+}
+

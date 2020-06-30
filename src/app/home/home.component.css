@@ -1,0 +1,18 @@
+.homeplot{
+    border: 3px  solid black;
+    border-radius: 20px;
+}
+
+.fade-in {
+    animation: fadeInLeft ease 2s;
+}
+@keyframes fadeInLeft {
+    0% {
+        opacity:0;
+        transform: translate(50px);
+    }
+    100% {
+        opacity:1;
+        transform: translate(0);
+    }
+}

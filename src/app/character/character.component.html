@@ -1,0 +1,82 @@
+<div class="fade-in-fwd">
+  <div class="card mx-5 my-5">
+
+    <!-- HEADER -->
+    <div class="card-header">
+      <h5 class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Listado de Personajes</h5>
+      <button class="btn btn-rounded custom-button float-right mt-2 zoom" type="button" [routerLink]="['/character/form']" (click)='globalService.playAudioClick()'>
+        Crear Personaje
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+      <h6 class="text-white fade-in-top" style="font-family: georgia,garamond,serif; font-style: italic;">Buscar por nombre de personaje:</h6>
+      <div class="row fade-in-top">
+        <div class="col-10">
+          <div class="form-group input-group">
+            <input type="text" class="form-control" name="filter" [(ngModel)]="filterPost" placeholder="Ej: SuperGuerrero"  style="font-family: georgia,garamond,serif; font-style: italic;">
+            <div class="input-group-append" title="Eliminar Filtro"  *ngIf="filterPost != ''" (click)='noFilter()' style="cursor: pointer;">
+              <span class="input-group-text nofilter">X</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <button class="zoom btn btn-rounded custom-button w-100" type="button"(click)='findCharacterByName(filterPost);globalService.playAudioClick()'>
+            Buscar
+          </button>
+        </div>
+      </div>
+      <div *ngIf="characters?.length<=0 && noResults == false" class="alert alert-info">
+        No hay registros en la base de datos
+      </div>
+      <div *ngIf="characters?.length<=0 && noResults == true" class="alert alert-warning">
+        No existen coincidencias con la búsqueda "{{searched}}"
+      </div>
+      <table class="table table-dark table-hover table-responsive-xl tabla fade-in-top" *ngIf="characters?.length>0">
+        <thead>
+          <tr style="background-color: rgb(231, 105, 105); cursor: default;">
+            <th>Nombre</th>
+            <th>Nivel</th>
+            <th>Experiencia</th>
+            <th>Fortaleza</th>
+            <th>Magia</th>
+            <th>Vida</th>
+            <th>Velocidad</th>
+            <th>Inteligencia</th>
+            <th>Clase</th>
+            <th>Usuario</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let character of characters" (mouseover)='globalService.playAudio()'>
+            <td>{{ character.name }}</td>
+            <td>{{ character.lvl }}</td>
+            <td>{{ character.experience  }}</td>
+            <td>{{ character.strength }}</td>
+            <td>{{ character.magic  }}</td>
+            <td>{{ character.hp  }}</td>
+            <td>{{ character.speed }}</td>
+            <td>{{ character.intelligence }}</td>
+            <td>{{ character.characterRol.characterRolName }}</td>
+            <td>{{ character.user.userName }}</td>
+            <td style="width: 1px;">
+              <button type="button" name="editar" class="zoom btn btn-info"
+                [routerLink]="['/character/form', character.idCharacter]" (click)='globalService.playAudioClick()'>
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </td>
+            <td style="width: 1px;">
+              <button type="button" name="crear" class="zoom btn btn-danger" (click)='deleteCharacter(character)'>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <app-character-paginator *ngIf="characterPaginator && searched == ''" [characterPaginator]="characterPaginator"></app-character-paginator>
+    </div>
+  </div>
+</div>

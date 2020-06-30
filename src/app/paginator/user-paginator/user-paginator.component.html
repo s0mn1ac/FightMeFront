@@ -1,0 +1,28 @@
+<ul *ngIf="pages?.length > 0" class="pagination"  (click)='globalService.playAudioClick()'>
+
+    <li [ngClass]="userPaginator.number > 0?'page-item':'disabled page-item'">
+        <a class="page-link" [routerLink]="['/users/page', userPaginator.number - 1]">&laquo;</a>
+    </li>
+
+    <li [ngClass]="userPaginator.first?'disabled page-item':'page-item'">
+        <a class="page-link" [routerLink]="['/users/page', 0]">
+            Primera
+        </a>
+    </li>
+    
+    <li class="page-item" *ngFor="let page of pages" [ngClass]="page - 1 == userPaginator.number?'active':''">
+        <span class="page-link" *ngIf="page - 1 == userPaginator.number">{{ page }}</span>
+        <a class="page-link" *ngIf="page - 1 != userPaginator.number" [routerLink]="['/users/page', page - 1]">{{ page }}</a>
+    </li>
+
+    <li [ngClass]="userPaginator.last?'disabled page-item':'page-item'">
+        <a class="page-link" [routerLink]="['/users/page', userPaginator.totalPages - 1]">
+            Última
+        </a>
+    </li>
+
+    <li [ngClass]="userPaginator.number < userPaginator.totalPages - 1?'page-item':'disabled page-item'">
+        <a class="page-link" [routerLink]="['/users/page', userPaginator.number + 1]">&raquo;</a>
+    </li>
+
+</ul>

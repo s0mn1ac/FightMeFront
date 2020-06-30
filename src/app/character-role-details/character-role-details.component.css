@@ -1,0 +1,102 @@
+.skills{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+}
+
+.images{
+    display: flex; 
+    flex-direction: row; 
+    justify-content: flex-start;
+    height: 50%;
+}
+
+.fade-inRight {
+    animation: fadeInRight ease 3s;
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity:0;
+        transform: translate(-50px);
+    }
+    100% {
+        opacity:1;
+        transform: translate(0);
+    }
+}
+
+.parent-card {
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #8cb369;
+    box-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+}
+
+.title {
+    font-weight: bolder;
+    color: #8cb369;
+    text-shadow: 1px 1.5px 1px rgba(0, 0, 0, 0.747);
+    font-size: 25px;
+}
+
+.custom-border {
+    border-color: #8cb369;
+}
+
+.list-group-item {
+    background: rgb(29, 29, 29);
+    border-color: rgba(255, 255, 255, 0);
+    color: #FFF;
+}
+
+.list-hover {
+    border-color: rgba(255, 255, 255, 0);
+    color: #FFF;
+    animation: 0.2s;
+    -webkit-animation: 0.3s;
+}
+
+.list-hover:hover {
+    background-color: rgb(52,58,64);
+    color: white;
+}
+
+.badge-custom {
+    background-color: #e74c3c;
+    color: #FFF;
+}
+
+.char-selector {
+    background-color: rgb(29, 29, 29);
+}
+
+.char-selector:hover {
+    background-color: rgb(52,58,64);
+}
+
+
+.w-30 {
+    width: 30% !important;
+}
+
+.w-40 {
+    width: 40% !important;
+}
+
+.checkeable input {
+  display: none;
+}
+
+.checkeable input:checked  + img {
+  background-color: #8cb369;
+}
+
+.borde {
+    border: 2px solid black;
+}
+
+.mx-5 {
+    margin-left: 5rem !important;
+    margin-right: 5rem !important;
+}

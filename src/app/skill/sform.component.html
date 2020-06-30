@@ -1,0 +1,157 @@
+<!-- VALIDACIONES -->
+<div class="container" *ngIf="this.skillService.validaciones?.length>0">
+  <div class="alert alert-danger" role="alert" *ngFor="let validacion of this.skillService.validaciones">
+    {{validacion}}
+  </div>
+</div>
+
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="container">
+
+  <div class="card mt-5 bg-style fade-in-fwd">
+    
+    <!-- HEADER -->
+    <div class="card-header">
+
+      <h5 *ngIf="!skill.idSkill" class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Crear habilidad</h5>
+      <h5 *ngIf="skill.idSkill" class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Editar habilidad</h5>
+
+      <button type="button" class="close" aria-label="Close" (click)='return()'>
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+
+      <div class="container">
+
+        <div class="alert alert-danger fade-in-top" *ngIf="(skill_name.invalid && skill_name.touched) || (skill_quantity.invalid && skill_quantity.touched)
+        || (pass.invalid && pass.touched)"> 
+        <div>
+          Todos los campos de este formulario son  obligatorios
+        </div>
+      </div>
+
+        <form #skillForm="ngForm">
+
+          <div class="row">
+
+            <div class="col-1"></div>
+
+            <div class="col-4">
+
+              <div class="form-group row">
+                <label for="name" class="col-form-label col-5">Nombre</label>
+                <div class="col input-group">
+                  <input type="text" class="form-control" [(ngModel)]="skill.name" name="name" required minlength="3"
+                    #skill_name="ngModel">
+                    <div class="input-group-append" *ngIf="skill_name.invalid && (skill_name.dirty || skill_name.touched)">
+                      <span class="input-group-text invalido" *ngIf="skill_name.errors.required">
+                        <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                      </span>
+                    </div>
+                </div>
+              </div>
+            
+            </div>
+            
+            <div class="col-3">
+        
+              <div class="form-group row">
+                <label for="action" class="col-form-label col-4">Acción</label>
+                <div class="col">
+                  <select name="action" class="form-control" [(ngModel)]="skill.action">
+                    <option *ngFor="let actionOption of actions" [ngValue]="actionOption">{{ actionOption }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-3">
+
+              <div class="form-group row">
+                <label for="birthdate" class="col-form-label col-sm-6">Cantidad</label>
+                <div class="col input-group">
+                  <input type="number" class="form-control" [(ngModel)]="skill.quantity" name="quantity" required
+                    #skill_quantity="ngModel">
+                    <div class="input-group-append" *ngIf="skill_quantity.invalid && (skill_quantity.dirty || skill_quantity.touched)">
+                      <span class="input-group-text invalido" *ngIf="skill_quantity.errors.required">
+                        <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                      </span>
+                    </div>
+                </div>
+              </div>
+            
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-1"></div>
+
+            <div class="col-10">
+
+              <div class="form-group row">
+                <label for="text" class="col-form-label col-2">Descripción</label>
+                <div class="col input-group">
+                  <input type="text" class="form-control" [(ngModel)]="skill.description" name="description" required #pass="ngModel">
+                  <div class="input-group-append" *ngIf="pass.invalid && (pass.dirty || pass.touched)">
+                    <span class="input-group-text invalido" *ngIf="pass.errors.required">
+                      <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-1"></div>
+
+            <div class="col-10">
+
+              <div class="form-group row">
+                <label for="categoria" class="col-form-label col-2">Tipo de Personaje</label>
+                <div class="col">
+                  <select multiple name="categoria" class="form-control" [compareWith]="compareRoles" [(ngModel)]="skill.characterRoles" >
+                    <option *ngFor="let rol of charactersRol" [ngValue]="rol">
+                      {{ rol.characterRolName }}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer">
+
+      <button class="zoom btn custom-button float-right" style="width: 100px;" role="button" (click)='addSkill()' *ngIf="!skill.idSkill else elseBlock" [disabled]="!skillForm.form.valid">
+        Crear
+      </button>
+
+      <ng-template #elseBlock>
+        <button class="zoom btn custom-button float-right" style="width: 100px;" role="button" (click)='modifySkill()' [disabled]="!skillForm.form.valid">
+          Editar
+        </button>
+      </ng-template>
+
+    </div>
+
+  </div>
+
+</div>

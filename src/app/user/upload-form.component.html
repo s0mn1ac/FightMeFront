@@ -1,0 +1,116 @@
+<!-- VALIDACIONES -->
+<div class="container" *ngIf="this.userService.validaciones?.length>0">
+  <div class="alert alert-danger" role="alert" *ngFor="let validacion of this.userService.validaciones">
+    {{validacion}}
+  </div>
+</div>
+
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="container">
+
+  <div class="card mt-5 bg-style fade-in-fwd">
+
+    <!-- HEADER -->
+    <div class="card-header">
+
+      <h5  class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Reconocimiento facial</h5>
+
+      <button type="button" class="close" aria-label="Close" (click)='return()'>
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+
+    </div> 
+
+    <!-- BODY -->
+    <div class="card-body">
+
+      <div class="container">
+
+        <div class="row mx-4 no-gutters">
+
+          <form  #uploadForm="ngForm" class="needs-validation col-12">
+
+            <!-- Fila 1/3 -->
+            <div class="row">
+
+              <div class="col-12" *ngIf="user.faceId != null else elseIntroText">
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input (change)='selectFile($event)' type="file" accept=".png, .jpg, .jpeg" class="custom-file-input" id="inputFile" aria-describedby="inputGroupFileAddon04" style="cursor: pointer;" required>
+                    <label class="custom-file-label" data-browse="Seleccionar" for="inputGroupFile04">{{ fileName }}</label>
+                  </div>
+                </div>
+                <small id="fileHelp" class="form-text text-white">Tamaño máximo 10MB. Formatos válidos: .png, .jpg y .jpeg</small>
+              </div>
+
+              <ng-template #elseIntroText>
+                <div class="container card-body bg-style rounded my-3 mx-3 fade-in-fwd">
+                  <p class="m-3">
+                      La funcionalidad FaceId te permite iniciar sesión sin la necesidad de escribir tu contraseña. Para comenzar a utilizarla simplemente deberás hacer click en el botón que verás a continuación y comenzar a subir tantas fotografías de tu cara como desees para registrar tus datos faciales. Las fotografías no se almacenan en nuestro servidor, sino que su información se envía directamente a la nube de Microsoft Azure.
+                  </p>
+                </div>
+              </ng-template>
+
+            </div>
+
+            <!--
+            <div class="row">
+              <div class="container">
+                <app-webcam [username]="this.user.userName" *ngIf="user.faceId != null"></app-webcam>
+              </div>
+            </div>
+            -->
+
+            <!--
+            <div class="row mt-3">
+              <div class="form-check">
+                <div class="form-group">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="true" id="myCheck" required checked *ngIf="user.faceId != null">
+                    <input class="form-check-input" type="checkbox" value="true" id="myCheck" required *ngIf="user.faceId == null">
+                    <label class="form-check-label" for="invalidCheck">
+                      Habilitar FaceId
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            -->
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer">
+
+      <button *ngIf="user.faceId != null" (click)='uploadImage()' class="zoom btn custom-button float-right ml-2" style="width: 150px;" role="button" type="submit" [disabled]="!uploadForm.form.valid">
+        Subir Imagen
+      </button>
+
+      <button (click)="enableFaceId()" class="zoom btn btn-success float-right ml-2" role="button" *ngIf="user.faceId == null else elseDisableFaceId">
+        Habilitar FaceId
+      </button>
+
+      <ng-template #elseDisableFaceId>
+        <button (click)="disableFaceId()" class="zoom btn btn-danger float-right ml-2" role="button">
+          Deshabilitar FaceId
+        </button>
+      </ng-template>
+
+      <div *ngIf="progress > 0" class="progress" style="height: 38px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated float-right" role="progressbar" [ngStyle]="{width: progress + '%'}" attr.aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100">
+            {{progress}}%
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

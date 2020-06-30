@@ -1,0 +1,217 @@
+<div class="container main-container mt-5">
+
+  <div class="row">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="col-8 col-custom">
+
+      <!-- CONTENEDOR SUPERIOR: Personajes del usuario -->
+      <div class="container left-container justify-content-center fade-in-fwd" *ngIf="filterCharacterRol=='' && authService.hasCharacters()">
+
+        <!-- BOOTSTRAP CARD -->
+        <div class="card col-12 text-white parent-card" style="height: auto;">
+
+          <!-- HEAD -->
+          <div class="card-header">
+            <h5 class="card-title title titulo float-left mt-2 font-text" style="font-weight: bolder;">Mis personajes</h5>
+            <!--
+            <button class="btn btn-rounded btn-primary float-right mt-2 custom-button" type="button" (click)="switch()">
+              {{showButton ? 'Ocultar': 'Mostrar'}}
+            </button>
+            -->
+          </div>
+
+          <!-- BODY -->
+          <div class="card-body">
+
+            <div class="font-text container">
+              <div class="row">
+
+                <!-- TARJETAS DE PERSONAJE -->
+                <div class="col-12">
+                  <div class="row justify-content-center">
+                    <div *ngFor="let char of characters">
+                      <div *ngIf="char.user.userName == user" class="card child-card mb-4 mr-2 ml-2" style="width: 120px; height: 100%; cursor: pointer; text-align: center;" (click)="openDetails(char); globalService.playAudioClick()" (mouseover)='globalService.playAudio()'>
+                        <div class="row no-gutters">
+                          <div class="col-12" style="text-align: center;">
+                            <img src="http://localhost:8090/character/uploads/img/{{ char.img }}" style="width: 50%;" alt="{{ char.name }}"
+                              class="card-img picture img-shadow">
+                          </div>
+                          <div class="col-12 mt-3" style="text-align: center;">
+                            <span style="font-size: 1em;">{{char.name}}</span>
+                            <br>
+                            <span style="font-size: 0.9em;">Nivel: <span class="badge badge-custom badge-pill">{{char.lvl}}</span></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CONTENEDOR INFERIOR: Resto de personajes -->
+      <div class="container left-container justify-content-center fade-in-fwd mb-5" *ngIf="filterCharacterRol==''">
+
+        <!-- BOOTSTRAP CARD -->
+        <div class="card col-12 text-white parent-card mt-5">
+
+          <!-- HEAD -->
+          <div class="card-header">
+            <h5 class="card-title title titulo float-left mt-2 font-text" style="font-weight: bolder;">Mis adversarios</h5>
+          </div>
+
+          <!-- BODY -->
+          <div class="card-body">
+
+            <div class="font-text container">
+
+                <!--
+                <div class="row">
+                  <div class="col-12">
+                    <span class="clase text-center font-text" title="Mostrar todos" style="width: 100%; 
+                    display: inline-block; height: 50px; font-size: 30px; cursor: pointer;" (click)="filterCharacterRol=null">TODOS</span>
+                  </div>
+                </div>
+                -->
+                
+                <div class="row">
+
+                  <!-- OPCIÓN: Todos -->
+                  <div class="col-3">
+                    <div class="child-card" style="cursor: pointer;" (click)="globalService.playAudioClick(); filterCharacterRol=null" >
+                      <img (mouseover)='globalService.playAudio()' src="http://localhost:8090/imgs/all.png" alt="Mostrar todos" class="card-img picture img-shadow" style="height: 100%; width: 100%;">
+                      <div class="dropdown-divider divider"></div>
+                      <span class=" text-center font-text m-1" style="display: block; font-size: 1em;">Todos</span>
+                    </div>
+                  </div>
+
+                  <!-- OPCIÓN: Resto de opciones -->
+                  <div class="col-3" *ngFor="let rol of charactersRol">
+                    <div class="child-card" style="cursor: pointer;" (click)="globalService.playAudioClick(); filterCharacterRol=rol.characterRolName">
+                      <img  (mouseover)='globalService.playAudio()' src="http://localhost:8090/character/uploads/img/{{ rol.characterRolName.toLowerCase()}}.png" 
+                      alt="{{rol.characterRolName.toLowerCase()}}" class="card-img picture img-shadow" style="height: 100%; width: 100%;">
+                      <div class="dropdown-divider divider"></div>
+                      <span class="text-capitalize text-center font-text m-1" style="display: block; font-size: 1em;">{{rol.characterRolName.toLowerCase()}}</span>
+                    </div>
+                  </div>
+
+                </div>
+                  
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="col-4 col-custom">
+
+      <!-- MI PERFIL -->
+      <div class="container right-container justify-content-center fade-in-fwd mb-5" *ngIf="filterCharacterRol==''">
+
+        <!-- BOOTSTRAP CARD -->
+        <div class="card col-12 text-white parent-card" style="height: auto;">
+
+          <!-- HEAD -->
+          <div class="card-header">
+            <h5 class="card-title title titulo float-left mt-2 font-text" style="font-weight: bolder;">Mi perfil</h5>
+            <img *ngIf="loggedUser" class="float-right mt-2 img-shadow" src="/assets/img/banderas/{{loggedUser.country}}.svg" style="height: 35px; vertical-align: baseline;">
+          </div>
+
+          <!-- BODY -->
+          <div class="card-body">
+
+            <div class="row">
+
+              <div class="col-12">
+
+                <div class="card child-card container profile-pic" style="width: 100%; margin-top: 5.75px;">
+                  <img *ngIf="authService.hasRole('ROLE_ADMIN')" src="http://localhost:8090/imgs/king.png" class="card-img picture mb-2 img-shadow" style="width: 100%;">
+                  <img *ngIf="authService.hasRole('ROLE_USER')" src="http://localhost:8090/imgs/peasant.png" class="card-img picture mb-2 img-shadow" style="width: 100%;">
+                </div>
+
+                <ul class="list-group text-dark mb-3 mt-3 font-text">
+
+                  <li class="list-group-item">
+                    <span class="skills"><i class="fas fa-fist-raised mr-2"></i>Combates librados: {{totalBattles}}</span>
+                  </li>
+
+                  <li class="list-group-item">
+                    <span class="skills"><i class="fas fa-chevron-up mr-2"></i>Victorias: {{totalVictories}}</span>
+                  </li>
+
+                  <li class="list-group-item">
+                    <span class="skills"><i class="fas fa-chevron-down mr-2"></i>Derrotas: {{totalDefeats}}</span>
+                  </li>
+
+                  <li class="list-group-item" *ngIf="winRate < 50" style="background-color: #dc3545;">
+                    <span class="skills"><i class="fas fa-chart-line mr-2"></i>Win rate: {{winRate}}</span>
+                  </li>
+
+                  <li class="list-group-item" *ngIf="winRate >= 50" style="background-color: #28a745;">
+                    <span class="skills text-shadow"><i class="fas fa-chart-line mr-2"></i>Win rate: {{winRate}}%</span>
+                  </li>
+
+                </ul>
+
+              </div>
+
+            </div>
+            
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FILTRADO DE PERSONAJES -->
+<section id="char-details" *ngIf="filterCharacterRol!=''">
+  <div class="font-text container mb-5">
+    <button type="button" class="btn clase fade-in-left luchar" (click)="filterCharacterRol=''" >&larr; Volver al menu</button>
+    <div class="row fade-in-top mt-3">
+      <div *ngFor="let character of characters | filterCharacter:filterCharacterRol">
+        <div class="col-sm-6" *ngIf="character.user.userName != user">
+
+          <div class="card mb-3 tarjeta" style="width: 525px; cursor: pointer;" (click)="openDetails(character); globalService.playAudioClick()" (mouseover)='globalService.playAudio()'>
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img src="http://localhost:8090/character/uploads/img/{{ character.img }}" alt="{{ character.name }}"
+                  class="card-img picture img-shadow">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{character.name}}</h5>
+                  <p class="t card-text mt-1">Nivel: {{character.lvl}}</p>
+                  <p class="t card-tex mt-1">Experiencia: {{character.experience}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-chardetails [character]="characterSelected" *ngIf="characterSelected"></app-chardetails>

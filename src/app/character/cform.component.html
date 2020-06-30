@@ -1,0 +1,212 @@
+<!-- VALIDACIONES -->
+<div class="container" *ngIf="this.characterService.validaciones?.length>0">
+  <div class="alert alert-danger" role="alert" *ngFor="let validacion of this.characterService.validaciones">
+    {{validacion}}
+  </div>
+</div>
+
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="container">
+
+  <div class="card mt-5 bg-style fade-in-fwd">
+    
+    <!-- HEADER -->
+    <div class="card-header">
+
+      <h5 *ngIf="!character.idCharacter" class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Crear personaje</h5>
+      <h5 *ngIf="character.idCharacter" class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Editar personaje</h5>
+
+      <button type="button" class="close" aria-label="Close" (click)='return()'>
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+
+      <div class="container">
+
+        <div class="alert alert-danger fade-in-top" *ngIf="(level.invalid && level.touched) || (strength.invalid && strength.touched)
+          || (magic.invalid && magic.touched) || (experience.invalid && experience.touched) || (speed.invalid && speed.touched)
+          || (intelligence.invalid && intelligence.touched) || (life.invalid && life.touched)"> 
+          <div>
+            Todas las habilidades deben tener un valor comprendido entre 1 y 100
+          </div>
+        </div>
+
+        <form #characterForm="ngForm">
+
+          <div class="row">
+
+            <div class="col-1"></div>
+
+            <div class="col-6">
+
+              <div class="form-group row">
+                <label for="personaje" class="col-form-label col-3">Clase</label>
+                <div class="col-9">
+                  <select (click)="updateImg()" id="selector" name="categoria" class="form-control" [compareWith]="compareRoles" [(ngModel)]="character.characterRol">
+                    <option *ngFor="let rol of charactersRol" [ngValue]="rol">
+                      {{ rol.characterRolName }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="juego" class="col-form-label col-3">Usuario</label>
+                <div class="col-9">
+                  <select class="form-control" [compareWith]="compareUsers" [(ngModel)]="character.user" name="usuario" required>
+                    <option *ngFor="let user of users" [ngValue]="user">{{ user.userName }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="nombre" class="col-form-label col-3">Nombre</label>
+                <div class="col-9">
+                  <input type="text" class="form-control" [(ngModel)]="character.name" name="nombre" required #nameCh="ngModel">
+                  <div class="alert alert-danger" *ngIf="nameCh.invalid && (nameCh.dirty || nameCh.touched)">
+                    <div *ngIf="nameCh.errors.required">
+                      Debe especificar un nombre para el personaje
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-6">
+
+                  <div class="form-group row">
+                    <label for="nivel" class="col-form-label col">Nivel</label>
+                    <div class="col input-group">
+                      <input type="number" id="nivel" class="form-control" [(ngModel)]="character.lvl" name="nivel" max="100" min="0" pattern="^(100|\d?\d)$"
+                        #level="ngModel" required>
+                        <div class="input-group-append" *ngIf="level.invalid && (level.dirty || level.touched)">
+                          <span class="input-group-text invalido" *ngIf="level.errors.required">
+                            <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                          </span>
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="fortaleza" class="col-form-label col">Fortaleza</label>
+                    <div class="col input-group">
+                      <input type="number" id="fortaleza" class="form-control fortaleza" [(ngModel)]="character.strength" name="strength"
+                        pattern="^(100|\d?\d)$" #strength="ngModel" max="100" min="0" required>
+                      <div class="input-group-append" *ngIf="strength.invalid && (strength.dirty || strength.touched)">
+                        <span class="input-group-text invalido" *ngIf="strength.errors.required">
+                          <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="magia" class="col-form-label col">Magia</label>
+                    <div class="col input-group">
+                      <input type="number" id="magia" class="form-control magia" [(ngModel)]="character.magic" name="magic" pattern="^(100|\d?\d)$"
+                        #magic="ngModel" max="100" min="0" required>
+                      <div class="input-group-append" *ngIf="magic.invalid && (magic.dirty || magic.touched)">
+                        <span class="input-group-text invalido" *ngIf="magic.errors.required">
+                          <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="vida" class="col-form-label col">Vida</label>
+                    <div class="col input-group">
+                      <input type="number" id="vida" class="form-control vida" [(ngModel)]="character.hp" name="vida" pattern="^(100|\d?\d)$"
+                        #life="ngModel" max="100" min="0" required>
+                        <div class="input-group-append" *ngIf="life.invalid && (life.dirty || life.touched)">
+                          <span class="input-group-text invalido" *ngIf="life.errors.required">
+                            <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                          </span>
+                        </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-6">
+
+                  <div class="form-group row">
+                    <label for="experiencia" class="col-form-label col">Experiencia</label>
+                    <div class="col input-group">
+                      <input type="number" id="experiencia" class="form-control" [(ngModel)]="character.experience" name="experience"
+                        pattern="^(100|\d?\d)$" #experience="ngModel" max="100" min="0" required>
+                      <div class="input-group-append" *ngIf="experience.invalid && (experience.dirty || experience.touched)">
+                        <span class="input-group-text invalido" *ngIf="experience.errors.required">
+                          <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="velocidad" class="col-form-label col">Velocidad</label>
+                    <div class="col input-group">
+                      <input type="number" id="velocidad" class="form-control velocidad" [(ngModel)]="character.speed" name="speed" pattern="^(100|\d?\d)$"
+                        #speed="ngModel" max="100" min="0" required>
+                      <div class="input-group-append" *ngIf="speed.invalid && (speed.dirty || speed.touched)">
+                        <span class="input-group-text invalido" *ngIf="speed.errors.required">
+                          <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inteligencia" class="col-form-label col">Inteligencia</label>
+                    <div class="col input-group">
+                      <input type="number" id="inteligencia" class="form-control inteligencia" [(ngModel)]="character.intelligence" name="inteligencia"
+                        pattern="^(100|\d?\d)$" #intelligence="ngModel" max="100" min="0" required>
+                        <div class="input-group-append" *ngIf="intelligence.invalid && (intelligence.dirty || intelligence.touched)">
+                          <span class="input-group-text invalido" *ngIf="intelligence.errors.required">
+                            <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                          </span>
+                        </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-5">
+              <img *ngIf="character?.characterRol" class="img-shadow" src="http://localhost:8090/character/uploads/img/{{ character.characterRol.characterRolName }}.png" id="update-img" style="width: 90%; height: 90%;" alt="{{ characterSelected }}">
+              <img *ngIf="!character?.characterRol" class="img-shadow" src="http://localhost:8090/imgs/peasant.png" id="update-img" style="width: 90%; height: 90%;" alt="{{ characterSelected }}">
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer">
+
+      <button class="zoom btn custom-button float-right" style="width: 100px;" role="button" (click)='addCharacter(); globalService.playAudioClick()' *ngIf="!character.idCharacter else elseBlock" [disabled]="!characterForm.form.valid">
+        Crear
+      </button>
+
+      <ng-template #elseBlock>
+        <button class="zoom btn custom-button float-right" style="width: 100px;" role="button" (click)='modifyCharacter(); globalService.playAudioClick()' [disabled]="!characterForm.form.valid">
+          Editar
+        </button>
+      </ng-template>
+
+    </div>
+
+  </div>
+
+</div>

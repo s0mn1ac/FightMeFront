@@ -1,0 +1,58 @@
+input.velocidad {
+    background-color:#DC3646;
+    color: #FFF;
+}
+
+input.fortaleza {
+    background-color:#FFC107;
+    color: #FFF;
+}
+
+input.vida {
+    background-color:#28A745;
+    color: #FFF;
+}
+
+input.magia {
+    background-color:#007BFF;
+    color: #FFF;
+}
+
+input.inteligencia {
+    background-color:#17A2B8;
+    color: #FFF;
+}
+
+.title{
+    color: rgb(231, 105, 105);
+    text-shadow: 1px 1.5px 1px rgba(0, 0, 0, 0.747);
+    font-size: 25px;
+}
+
+.card {
+    border: 2px solid rgb(231, 105, 105);
+    box-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+}
+
+.accept {
+    background-color: rgb(231, 105, 105);
+}
+
+.custom-button {
+    background-color: rgb(231, 105, 105);
+    border-color: rgb(231, 105, 105);
+    transition: all 0.1s ease-in;
+    color: white;
+    -webkit-transition: all 0.1s ease-in;
+    -moz-transition: all 0.1s ease-in;
+}
+  
+.custom-button:hover {
+    background-color: rgb(192, 78, 78);
+    border-color: rgb(192, 78, 78);
+}
+
+.img-shadow {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
+    -webkit-filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
+}

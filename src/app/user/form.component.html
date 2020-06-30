@@ -1,0 +1,224 @@
+<!-- VALIDACIONES -->
+<div class="container" *ngIf="this.userService.validaciones?.length>0">
+  <div class="alert alert-danger" role="alert" *ngFor="let validacion of this.userService.validaciones">
+    {{validacion}}
+  </div>
+</div>
+
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="container">
+
+  <div class="card mt-5 bg-style fade-in-fwd">
+
+    <!-- HEADER -->
+    <div class="card-header">
+
+      <h5 *ngIf="!user.idUser" class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Crear usuario</h5>
+      <h5 *ngIf="user.idUser" class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Editar usuario</h5>
+
+      <button type="button" class="close" aria-label="Close" (click)='return()'>
+        <span aria-hidden="true" class="text-white">&times;</span>
+      </button>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+
+      <div class="container">
+
+        <!--Alertas Formulario no Válido-->
+        
+        <!--Campos obligatorios-->
+        <div class="row mx-4">
+          <div class="col-12 alert alert-danger fade-in-top" *ngIf="(user_name.invalid && user_name.touched && user_name.errors.required)
+            || (pass.invalid && pass.touched && pass.errors.required)
+            || (correo.invalid && correo.touched) || (fecha.invalid && fecha.touched) || (pais.invalid && pais.touched)"> 
+            <div>
+              Todos los campos de este formulario son obligatorios
+            </div>
+          </div>
+        </div>
+
+        <!--Campos con un mínimo de caracteres-->
+        <div class="row mx-4">
+          <div class="col-12 alert alert-danger fade-in-top" *ngIf="(user_name.invalid && user_name.touched && user_name.errors.minlength) 
+            || (pass.invalid && pass.touched && pass.errors.minlength)"> 
+            <div>
+              Los campos nombre y usuario requieren un mínimo de 3 caracteres
+            </div>
+          </div>
+        </div>
+
+        <!--Correo con formato no válido-->
+        <div class="row mx-4">
+          <div class="col-12 alert alert-danger fade-in-top" *ngIf="(correo.invalid && correo.touched && correo.errors.email)"> 
+            <div>
+              El correo no tiene un formato válido
+            </div>
+          </div>
+        </div>
+
+        <div class="row mx-4 no-gutters">
+
+          <form class="col-12" #userForm="ngForm">
+
+            <!-- Fila 1/3 -->
+            <div class="row">
+
+              <div class="col-6">
+
+                <div class="form-group row">
+                  <label for="username" class="col-form-label col-4">Usuario</label>
+                  <div class="col-8 input-group">
+                    <input type="text" class="form-control" [(ngModel)]="user.userName" name="username" required minlength="3" #user_name="ngModel">
+                    <div class="input-group-append" *ngIf="user_name.invalid && (user_name.dirty || user_name.touched)">
+                      <span class="input-group-text invalido" *ngIf="user_name.errors.required || user_name.errors.minlength">
+                        <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-6">
+
+                <div class="form-group row" id="show_hide_password">
+                  <label for="pass" class="col-form-label col-4">Contraseña</label>
+                  <div class="input-group col-8">
+                    <input type="password" id="toggle" class="form-control" [(ngModel)]="user.password" name="password" minlength="3" required #pass="ngModel" [disabled]="user.idUser && toggler">
+                    <div *ngIf="user.idUser" class="input-group-append">
+                      <button class="btn btn custom-button" type="button" id="button-addon" title="Habilitar edición" (click)="updatePasswordToggler()">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <!--
+                    <div class="input-group-append" *ngIf="pass.invalid && (pass.dirty || pass.touched)">
+                      <span class="input-group-text invalido" *ngIf="pass.errors.required || pass.errors.minlength">X</span>
+                    </div>
+                    -->
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Fila 2/3 -->
+            <div class="row">
+
+              <div class="col-6">
+
+                <div class="form-group row">
+                  <label for="correo" class="col-form-label col-4">Correo</label>
+                  <div class="col-8 input-group">
+                    <input type="email" class="form-control" id="gmail" [(ngModel)]="user.mail" name="mail" required email #correo="ngModel">
+                    <div class="input-group-append" *ngIf="correo.invalid && (correo.dirty || correo.touched)">
+                      <span class="input-group-text invalido" *ngIf="correo.errors.required || correo.errors.email">
+                        <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                      </span>
+                    </div>
+                    <div class="input-group-append">
+                      <span class="input-group-text alert-success suggested" title="Correo sugerido" *ngIf="user.userName && correo.invalid" (click)='suggestedEmail()'><i class="fas fa-info-circle"></i></span>
+                    </div>
+                    
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-6">
+
+                <div class="form-group row">
+                  <label for="country" class="col-form-label col-4">País</label>
+                  <div class="col-8 input-group">
+                    <select name="paises" [compareWith]="comparePaises" class="form-control" [(ngModel)]="user.country" required #pais="ngModel">
+                      <option *ngFor="let pais of paises" [ngValue]="pais">{{ pais }}</option>
+                    </select>
+                  </div>
+                </div>
+                
+              </div>
+
+            </div>
+
+            <!-- Fila 3/3 -->
+            <div class="row">
+
+              <div class="col-6">
+
+                <div class="form-group row">
+                  <label for="birthdate" class="col-form-label col-4">Fecha nacimiento</label>
+                  <div class="col-8 input-group">
+                    <input type="date" class="form-control" [(ngModel)]="user.birthdate" name="birthdate" required #fecha="ngModel"  value="2017-06-01">
+                    <div class="input-group-append" *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)">
+                      <span class="input-group-text invalido" *ngIf="fecha.errors.required">
+                        <i class="fas fa-times" style="color: rgb(29, 29, 29);"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              
+              <div class="col-6">
+
+                <div class="form-group row">
+                  <label for="categoria" class="col-form-label col-4">Rol</label>
+                  <div class="col-8 input-group">
+                    <select name="roles" [compareWith]="compareRoles" class="form-control" [(ngModel)]="user.rol" required #roll="ngModel">
+                      <option *ngFor="let rolOption of roles" [ngValue]="rolOption">{{ rolOption.name }}</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <!--
+              <div class="col-6">
+
+                <div class="form-group row">
+                  <label for="categoria" class="col-form-label col-4">Rol</label>
+                  <div class="col-8 input-group d-flex" style="background-color: tomato;">
+                    <div class="form-check form-check-inline flex-fill" *ngFor="let rol of roles">
+                      <input (change)="onCheck()" class="form-check-input" type="radio" name="roles" [value]="rol" [(ngModel)]="user.rol" required #roll="ngModel">
+                      <label class="form-check-label" for="1">{{ rol.name }}</label>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              -->
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer">
+
+      <button class="zoom btn custom-button float-right" style="width: 100px;" role="button" (click)='addUser()' *ngIf="!user.idUser else elseBlock" [disabled]="!userForm.form.valid">
+        Crear
+      </button>
+
+      <ng-template #elseBlock>
+        <button *ngIf="toggler" class="zoom btn custom-button float-right" style="width: 100px;" role="button" (click)='modifyUser()' [disabled]="!userForm.form.valid">
+          Editar
+        </button>
+        <button *ngIf="!toggler" class="zoom btn custom-button float-right" style="width: 100px;" role="button" (click)='modifyUserWithPassword()' [disabled]="!userForm.form.valid">
+          Editar
+        </button>
+      </ng-template>
+
+    </div>
+
+  </div>
+
+</div>

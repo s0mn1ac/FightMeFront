@@ -1,0 +1,83 @@
+<!--
+<div class="card bg-dark text-white text-center">
+    
+    <div class="card-header">
+        {{titulo}}
+    </div>
+  
+    <div class="card-body">
+
+        <form method="post">
+        
+            <div class="form-group col">
+                <input [(ngModel)]="credentials.username" type="text" class="form-control" name="username" id="username" placeholder="Usuario" autofocus required>
+            </div>
+
+            <div class="form-group col">
+                <input [(ngModel)]="credentials.password" type="password" class="form-control" name="password" id="password" placeholder="Contraseña" required>
+            </div>
+
+            <div class="form-group col">
+                <input (click)='login()' type="submit" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión">
+            </div>
+
+        </form>
+
+    </div>
+  
+</div>
+-->
+
+<form class="form-signin card my-5 bg-style" [hidden]="!swtchFrm">
+
+    <!--
+    <div *ngIf="faceId == false" (click)="faceId = null" style="cursor: pointer;" class="fade-in-left return">
+        <i class="fas fa-caret-square-left "></i>
+    </div>
+    -->
+
+    <div *ngIf="faceId != true">
+        <img class="mb-4 fade-in-top" style="display: block; margin-left: auto; margin-right: auto;" src="http://localhost:8090/imgs/spell_scroll.png" width="150" height="150">
+    </div>
+    
+    <h1 *ngIf="faceId != true" class="h3 mb-3 font-weight-normal text-center fade-in-top">
+        Por favor, inicia sesión
+    </h1>
+    
+    <div *ngIf="faceId == false" class="fade-in-top">
+
+        <label for="inputUsername" class="sr-only">Usuario</label>
+        <input [(ngModel)]="credentials.username" type="text" class="form-control my-2" name="username" id="username" placeholder="Usuario" autofocus required>
+        
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <input [(ngModel)]="credentials.password" type="password" class="form-control" name="password" id="password" placeholder="Contraseña" required>
+
+        <input (click)='login()' type="submit" class="btn btn-lg btn-primary btn-block" value="Iniciar sesión">
+        
+        <button (click)='faceId = true' type="button" class="btn btn-lg btn-warning btn-block text-white">
+            Cambiar a FaceId<i class="fas fa-camera ml-2"></i>
+        </button>
+
+    </div>
+
+    <div *ngIf="faceId == true">
+        <app-webcam></app-webcam>
+        <button (click)='faceId = false' type="button" class="btn btn-lg btn-success btn-block text-white">
+            Cambiar a Formulario<i class="fas fa-pen ml-2"></i>
+        </button>
+    </div>
+
+    <!--
+    <div *ngIf="faceId == null">
+        <button (click)='faceId = false' type="button" class="btn btn-primary btn-lg btn-block">
+             <i class="fas fa-pen-square ico"></i>
+        </button>
+        <button (click)='faceId = true' type="button" class="btn btn-warning btn-lg btn-block text-white">
+            <i class="fas fa-camera ico"></i>
+        </button>
+    </div>
+    -->
+
+    <p class="mt-5 mb-3 text-center">&copy; Juan Miguel González Machado, 2020</p>
+
+</form>

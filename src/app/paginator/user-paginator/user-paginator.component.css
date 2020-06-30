@@ -1,0 +1,37 @@
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #e7a669;
+    border: solid 1px #e7a669;
+    cursor: default;
+}
+
+.page-item.disabled .page-link {
+    color: #9b9fa3 !important;
+}
+
+.page-item .page-link {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.page-item:hover:not(.active) .page-link:hover {
+    background-color: #1d1d1d;
+    color: #ffffff;
+}
+
+ul {
+    margin-bottom: 0;
+}
+
+a {
+    color: rgb(29, 29, 29);
+}
+
+a:hover {
+    color: black;
+}
+
+.pagination > li > a {
+    border: 1px solid rgb(231, 166, 105);
+}

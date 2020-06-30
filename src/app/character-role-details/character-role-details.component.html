@@ -1,0 +1,253 @@
+<div class="fade-in-fwd">
+
+    <!-- BOOTSTRAP CARD -->
+    <div class="card text-white parent-card mx-5 my-5" style="height: auto;">
+
+        <!-- CARD: HEAD (muestra las tres clases de personaje disponibles, para seleccionar una u otra según se prefiera) -->
+        <div class="card-header">
+            <h5 class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">Descripción de personajes:
+                <span class="text-capitalize" [style.color]="color">{{selected.toLowerCase()}}</span></h5>
+            <label class="checkeable float-right" *ngFor="let rol of charactersRol" (mouseover)='globalService.playAudio()'>
+                <input type="radio" name="cap1" id="radio-{{ rol.characterRolName.toLowerCase() }}"/>
+                <img (click)="charView(rol.characterRolName); globalService.playAudioClick()" id="{{ rol.characterRolName.toLowerCase() }}" class="img-thumbnail char-selector rounded ml-2 custom-border" style="cursor: pointer; width: 50px; height: 50px;" src="http://localhost:8090/character/uploads/img/{{ rol.characterRolName.toLowerCase()}}.png" />
+            </label>
+        </div>
+
+        <!-- CARD: BODY -->
+        <div class="container card-body bg-dark rounded my-3 fade-in-fwd borde" [style.border-color]="color" *ngIf="viewGuerrero || viewMago || viewArquero">
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <!-- BODY: Título: Estadísticas base y Habilidades -->
+                        <div class="container rounded fade-in-fwd borde" style="background-color: rgb(29, 29, 29);" [style.border-color]="color">
+
+                            <div class="row">
+
+                                <div class="col-7 mb-2 mt-3">
+
+                                    <h5 class="font-text"> Estadísticas base </h5>
+
+                                </div>
+
+                                <div class="col-5 mb-2 mt-3">
+
+                                    <h5 class="font-text"> Habilidades </h5> 
+                                    
+                                </div>
+
+                            </div>
+
+                        </div>
+            
+                        <!-- BODY: Título: Estadísticas base y Habilidades (se muestra el contenido de cada personaje, según se haya seleccionado en el menú superior) -->
+                        <div class="container rounded mt-1 borde" *ngFor="let rol of charactersRol | filterCharacterRole: selected" [style.border-color]="color" style="background-color: rgb(29, 29, 29); height: 348px;">
+
+                            <div class="container" style="background-color: rgb(29, 29, 29);">
+
+                                <div class="row rounded">
+
+                                    <div class="col-7">
+
+                                        <div class="container rounded" style="background-color: rgb(29, 29, 29);">
+
+                                            <div class="row">
+                    
+                                                <div class="container col-12">
+                    
+                                                    <ul class="list-group text-dark" style="margin-top: 20px;">
+                    
+                                                        <li class="list-group-item d-flex">
+                                                            <span class="w-40"> Vida: {{ getStats(rol.characterRolName, 'hp') }}/100 </span>
+                                                            <div class="progress my-2 flex-fill">
+                                                                <div class="progress-bar bg-success"
+                                                                    role="progressbar1" aria-valuemin="0" aria-valuemax="100"
+                                                                    [style.width]="getStats(rol.characterRolName, 'hp') + '%'"></div>
+                                                            </div>
+                                                        </li>
+                    
+                                                        <li class="list-group-item d-flex">
+                                                            <span class="w-40"> Fortaleza: {{ getStats(rol.characterRolName, 'strength') }}/100 </span>
+                                                            <div class="progress my-2 flex-fill">
+                                                                <div class="progress-bar bg-warning"
+                                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                                    [style.width]="getStats(rol.characterRolName, 'strength') + '%'"></div>
+                                                            </div>
+                                                        </li>
+                    
+                                                        <li class="list-group-item d-flex">
+                                                            <span class="w-40"> Velocidad: {{ getStats(rol.characterRolName, 'speed') }}/100 </span>
+                                                            <div class="progress my-2 flex-fill">
+                                                                <div class="progress-bar bg-danger"
+                                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                                    [style.width]="getStats(rol.characterRolName, 'speed') + '%'"></div>
+                                                            </div>
+                                                        </li>
+                    
+                                                        <li class="list-group-item d-flex">
+                                                            <span class="w-40"> Magia: {{ getStats(rol.characterRolName, 'magic') }}/100 </span>
+                                                            <div class="progress my-2 flex-fill">
+                                                                <div class="progress-bar bg-primary"
+                                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                                    [style.width]="getStats(rol.characterRolName, 'magic') + '%'"></div>
+                                                            </div>
+                                                        </li>
+                    
+                                                        <li class="list-group-item d-flex">
+                                                            <span class="w-40"> Inteligencia: {{ getStats(rol.characterRolName, 'intelligence') }}/100 </span>
+                                                            <div class="progress my-2 flex-fill">
+                                                                <div class="progress-bar bg-info"
+                                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                                    [style.width]="getStats(rol.characterRolName, 'intelligence') + '%'"></div>
+                                                            </div>
+                                                        </li>
+                                                        
+                                                    </ul>
+                                                
+                                                </div>
+                    
+                                            </div>
+
+                                        </div>
+                
+                                    </div>
+                
+                                    <div class="col-5">
+                
+                                        <div class="row">
+                    
+                                            <div class="container my-3">
+                                                
+                                                <ul class="list-group text-dark flex-fill w-100">
+                
+                                                    <li *ngFor="let skill of skills | filterRol: rol.characterRolName" class="list-group-item list-group-item-action list-hover" style="border-color: rgb(52,58,64); cursor: default;" title="{{ skill.description}}">
+                                                        <div>
+                                                            <img *ngIf="skill.characterRoles.length > 1" src="http://localhost:8090/imgs/common.png" class="mr-2" style="width: 10%;" alt="{{ skill.name}}">
+                                                            <img *ngIf="skill.characterRoles.length == 1" src="http://localhost:8090/imgs/{{rol.characterRolName.toLowerCase()}}.png" class="mr-2" style="width: 10%;" alt="{{ skill.name}}">
+                                                            <span> {{ skill.name}} </span>
+                                                        </div>
+                                                    </li>
+                
+                                                </ul>
+                
+                                            </div>
+                
+                                        </div>
+                
+                                    </div>
+                                            
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <!-- BODY: Título: Requisitos de nivel -->
+                        <div class="container rounded borde" [style.border-color]="color" style="background-color: rgb(29, 29, 29);">
+
+                            <div class="row">
+
+                                <span class="mt-3 mb-2 ml-3"> <h5 class="font-text"> Requisitos de nivel </h5> </span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- BODY: Contenido: Requisitos de nivel -->
+                        <div class="container rounded mt-1 borde" [style.border-color]="color" style="background-color: rgb(29, 29, 29); height: 348px;">
+
+                            <div class="container">
+
+                                <div class="row rounded">
+
+                                    <div class="col-12">
+
+                                        <div class="row">
+                                            
+                                            <div class="container mb-3 mx-3 rounded" style="background-color: rgb(29, 29, 29);">
+
+                                                <ul class="list-group text-dark mr-3" style="margin-top: 20px;">
+
+                                                    <li class="list-group-item">
+                                                        El personaje comienza a nivel
+                                                        <span class="badge badge-custom badge-pill">
+                                                            {{levelIni}}
+                                                        </span>
+                                                    </li>
+
+                                                    <li class="list-group-item">
+                                                        El personaje necesita
+                                                        <span class="badge badge-custom badge-pill">
+                                                            {{expReq}}
+                                                        </span>
+                                                        puntos de exp. para subir de nivel
+                                                    </li>
+
+                                                    <li class="list-group-item">
+                                                        Con cada batalla, el personaje gana
+                                                        <span class="badge badge-custom badge-pill">
+                                                            {{expPerBattle}}
+                                                        </span>
+                                                        puntos de exp.
+                                                    </li>
+
+                                                    <li class="list-group-item">
+                                                        Con cada nivel, el personaje gana
+                                                        <span class="badge badge-custom badge-pill">
+                                                            {{statsPerLevel}}
+                                                        </span>
+                                                        punto de habilidad en cada estadística
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+                                    
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" style="top: auto;" (click)='globalService.playAudioClick()'>
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" style="top: auto;" (click)='globalService.playAudioClick()'>
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Siguiente</span>
+                </a>
+
+                <ol class="carousel-indicators" style="position: relative; margin-top: 15px; margin-bottom: 0;" (click)='globalService.playAudioClick()'>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                </ol>
+
+            </div>
+
+        </div>
+
+        <div class="container card-body bg-style rounded my-3 fade-in-fwd font-text" *ngIf="!viewGuerrero && !viewMago && !viewArquero">
+
+            <h1 class="m-3">
+                Bienvenidos a FightMe!
+            </h1>
+
+            <p class="m-3">
+                Un juego de rol en línea en el cual sus jugadores podrán entramar batallas entre ellos y disfrutar del dulce sabor de la victoria,
+                o del amargo gusto de la derrota. Subir de nivel mientras combaten, desbloquear habilidades impresionantes, entablar amistad con
+                aquellos que una vez fueron enemigos y disfrutar viendo como vuestro personaje evoluciona subiendo de nivel.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

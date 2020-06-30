@@ -1,0 +1,89 @@
+<div class="fade-in-fwd">
+  <div class="card mx-5 my-5">
+
+    <!-- HEADER -->
+    <div class="card-header">
+      <h5 class="card-title titulo title  float-left mt-2 font-text">Listado de Habilidades</h5>
+      <button class="zoom btn btn-rounded custom-button float-right mt-2" type="button" [routerLink]="['/skill/form']" (click)='globalService.playAudioClick()'>
+        Crear habilidad
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body">
+      <h6 class="text-white titulo fade-in-top" style="font-family: georgia,garamond,serif; font-style: italic;">Buscar por habilidad:</h6>
+      <div class="row fade-in-top">
+        <div class="col-10">
+          <div class="form-group input-group">
+            <input type="text" class="form-control titulo" name="filter" [(ngModel)]="filterPost" placeholder="Ej: Golpetazo"  style="font-family: georgia,garamond,serif; font-style: italic;">
+            <div class="input-group-append" title="Eliminar Filtro"  *ngIf="filterPost != ''" (click)='noFilter()' style="cursor: pointer;">
+              <span class="input-group-text nofilter">X</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <button class="zoom btn btn-rounded custom-button w-100" type="button"(click)='findSkillByName(filterPost);globalService.playAudioClick()'>
+            Buscar
+          </button>
+        </div>
+      </div>
+      <div *ngIf="skills?.length<=0 && noResults == false" class="alert alert-info">
+        No hay registros en la base de datos
+      </div>
+      <div *ngIf="skills?.length<=0 && noResults == true" class="alert alert-warning">
+        No existen coincidencias con la búsqueda "{{searched}}"
+      </div>
+      <table class="table table-dark table-hover table-responsive-md tabla fade-in-top" *ngIf="skills?.length>0">
+        <thead>
+          <tr style="background-color: rgb(231, 219, 105); cursor: default;">
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acción</th>
+            <th>Cantidad</th>
+            <th><nav class="navbar navbar-dark bg-dark filtro custom-nav">
+              <a class="nav-link dropdown-toggle pb-0 pt-0 text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)='globalService.playAudioClick()'>
+                Personaje
+              </a>
+              <div class="dropdown-menu bg-dark text-white border-info" aria-labelledby="navbarDropdown">
+                <a  *ngFor="let rol of charactersRoles" class="dropdown-item" style="cursor: pointer;" (mouseover)='globalService.playAudio()' (click)="filterCharacterRol=rol.characterRolName; globalService.playAudioClick()">{{rol.characterRolName}}</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" style="cursor: pointer;" (click)="filterCharacterRol=''; globalService.playAudioClick()">TODOS</a>
+              </div>
+            </nav></th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let skill of skills  | filterRol:filterCharacterRol " (mouseover)='globalService.playAudio()' >
+            <td>{{ skill.name }}</td>
+            <td>{{ skill.description }}</td>
+            <td>{{ skill.action }}</td>
+            <td>{{ skill.quantity }}</td>
+            <td *ngIf="skill.characterRoles.length<3 else comunBlock">
+              <div class="trRol" *ngFor="let rol of skill.characterRoles">{{ rol.characterRolName }}</div>
+            </td>
+            <!--Para las habilidades comunes a los 3 personajes-->
+            <ng-template #comunBlock>
+              <td>TODOS</td>
+            </ng-template>
+
+
+
+            <td style="width: 1px;">
+              <button type="button" name="editar" class="zoom btn btn-info" [routerLink]="['/skill/form', skill.idSkill]" (click)='globalService.playAudioClick()'>
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </td>
+            <td style="width: 1px;">
+              <button type="button" name="crear" class="zoom btn btn-danger" (click)='deleteSkill(skill)'>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <app-skill-paginator *ngIf="skillPaginator && searched == ''" [skillPaginator]="skillPaginator"></app-skill-paginator>
+    </div>
+  </div>

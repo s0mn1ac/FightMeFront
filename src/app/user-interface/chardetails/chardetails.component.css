@@ -1,0 +1,93 @@
+.open-modal{
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.bg-empty {
+    background-color: rgba(0, 0, 0, 100);
+}
+
+.animacion{
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+}
+
+.fadeIn{
+    animation-name: fadeIn;
+    -webkit-animation-name: fadeIn;
+}
+
+.fadeOut{
+    animation-name: fadeOut;
+    -webkit-animation-name: fadeOut;
+}
+
+.badge-custom {
+    background-color: #e74c3c;
+    color: #FFF;
+}
+
+.list-group-item {
+    background: rgb(29, 29, 29);
+    border-color: rgba(255, 255, 255, 0);
+    color: #FFF;
+}
+
+.modal-header {
+    color: #FFF;
+}
+
+.modal-dialog {
+    margin: 5rem auto 1rem auto;
+}
+
+.modal {
+    overflow: auto;
+}
+
+.parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.custom-button {
+    background-color: #8cb369;
+    border-color: #8cb369;
+    transition: all 0.1s ease-in;
+    color: white;
+    -webkit-transition: all 0.1s ease-in;
+    -moz-transition: all 0.1s ease-in;
+}
+  
+.custom-button:hover {
+    background-color: #618a3d;
+    border-color: #618a3d;
+}
+
+.custom-luchar {
+    background-color: #f48b4f;
+    border-color: #f48b4f;
+    transition: all 0.1s ease-in;
+    color: white;
+    -webkit-transition: all 0.1s ease-in;
+    -moz-transition: all 0.1s ease-in;
+}
+
+.custom-luchar:hover {
+    background-color: #d8631f;
+    border-color: #d8631f;
+}
+
+@keyframes fadeIn {0% {opacity: 0}to{opacity: 1}}
+@-webkit-keyframes fadeIn {0% {opacity: 0}to{opacity: 1}}
+
+@keyframes fadeOut {0% {opacity: 1}to{opacity: 0}}
+@-webkit-keyframes fadeOut {0% {opacity: 1}to{opacity: 0}}

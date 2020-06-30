@@ -1,0 +1,56 @@
+.tabla {
+  text-align: center;
+  border: 2px solid rgb(231, 166, 105);
+  box-shadow: -1px 1px 0 #000, 
+              1px 1px 0 #000, 
+              1px -1px 0 #000,
+              -1px -1px 0 #000; 
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgb(231, 166, 105);
+  box-shadow: -1px 1px 0 #000, 
+              1px 1px 0 #000, 
+              1px -1px 0 #000,
+              -1px -1px 0 #000;
+  /* backdrop-filter: blur(2px); */
+  /* min-height: 540px; */
+}
+
+table td {
+  vertical-align: middle !important;
+}
+
+table tr {
+  text-align: center !important;
+}
+
+.titulo {
+  color: rgb(231, 166, 105);
+  text-shadow: 1px 1.5px 1px rgba(0, 0, 0, 0.747);
+  font-size: 25px;
+}
+
+.custom-button {
+  background-color: rgb(231, 166, 105);
+  border-color: rgb(231, 166, 105);
+  transition: all 0.1s ease-in;
+  color: white;
+  -webkit-transition: all 0.1s ease-in;
+  -moz-transition: all 0.1s ease-in;
+}
+
+.custom-button:hover {
+  background-color: rgb(196, 135, 78);
+  border-color: rgb(196, 135, 78);
+}
+
+.table thead th {
+  border-bottom: none;
+}
+
+.mx-5 {
+  margin-left: 5rem !important;
+  margin-right: 5rem !important;
+}

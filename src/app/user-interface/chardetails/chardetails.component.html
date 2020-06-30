@@ -1,0 +1,152 @@
+<div class="font-text open-modal animacion fadeIn" *ngIf="charDetailsService.modal">
+    <div class="modal" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content bg-empty">
+
+                <!-- CARD -->
+                <div class="card bg-dark">
+                    
+                    <!-- HEADER -->
+                    <div class="card-header">
+                        <h6 class="card-title float-left mt-2 mb-2" style="color: white;">{{ character.name }} - {{ character.characterRol.characterRolName }}</h6>
+                        <button (click)="closeDetails()" type="button" class="close float-right" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="color: white;">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- BODY -->
+                    <div class="card-body">
+
+                        <div class="container">
+                            <div class="row rounded" style="background-color: rgb(29, 29, 29);">
+
+                                <div class="col-7">
+                                    <ul class="list-group text-dark mb-3 mt-3" style="height: 100%;">
+
+                                        <li class="list-group-item">
+                                            <p class="skills">Vida: {{character.hp}}/100</p>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                                    role="progressbar1" aria-valuemin="0" aria-valuemax="100"
+                                                    [style.width]="character.hp + '%'"></div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <p class="skills">Fortaleza: {{character.strength}}/100</p>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                    [style.width]="character.strength + '%'"></div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <p class="skills">Velocidad: {{character.speed}}/100</p>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                    [style.width]="character.speed + '%'"></div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <p class="skills">Magia: {{character.magic}}/100</p>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                    [style.width]="character.magic + '%'"></div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <p class="skills">Inteligencia: {{character.intelligence}}/100</p>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                                                    [style.width]="character.intelligence + '%'"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-5 mt-3 mb-3 parent" style="margin-left: auto; margin-right: auto;">
+                                    <div>
+                                        <img src="http://localhost:8090/character/uploads/img/{{ character.img }}"
+                                        class="mb-4 img-shadow" style="width: 100%; height: 100%;" alt="{{ character.name }}">
+                                    </div>
+                                    <div style="width: 100%;">
+                                        <ul class="list-group list-group-vertical" style="height: 100%;">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center" style="width: 100%;">
+                                                Nivel:
+                                                <span class="badge badge-custom badge-pill">
+                                                    {{character.lvl}}
+                                                </span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center" style="width: 100%;">
+                                                Experiencia:
+                                                <span class="badge badge-custom badge-pill">
+                                                    {{character.experience}}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <div class="row rounded mt-3" style="background-color: rgb(29, 29, 29);">
+                                
+                                <div class="col-7">
+                                    <ul class="list-group list-group-horizontal" style="height: 100%; width: 100%;">
+
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" style="width: 100%;">
+                                            <div class="vd">
+                                                <i class="fas fa-chevron-up fa-border" style="background-color: #28a745; border-color: #28a745;"></i>
+                                                Victorias:
+                                            </div>
+                                            <span class="badge badge-success badge-pill">
+                                                {{character.victories}}
+                                            </span>
+                                        </li>
+
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" style="width: 100%;">
+                                            <div class="vd">
+                                                <i class="fas fa-chevron-down fa-border" style="background-color: #dc3545; border-color: #dc3545;"></i>
+                                                Derrotas:
+                                            </div>
+                                            <span class="badge badge-danger badge-pill">
+                                                {{character.defeats}}
+                                            </span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                                <div class="col-5 d-flex" style="vertical-align: middle; text-align: center;">
+                                    <button type="button" class="btn custom-button my-2 mr-1 img-shadow" style="width: 100%;"
+                                    [routerLink]="['/characters/rol', character.characterRol.characterRolName]"><span class="text-shadow">Información</span></button>
+                                    <button type="button" *ngIf="character.user.userName == loggedUser" class="btn custom-luchar my-2 ml-1 img-shadow" style="width: 100%;"
+                                    [routerLink]="['/battle', character.idCharacter]"><span class="text-shadow">¡Luchar!</span></button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- FOOTER 
+                    <div class="card-footer">
+                        <button (click)="closeDetails()" type="button" class="btn btn-secondary float-right" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-info" [routerLink]="['/battle', character.idCharacter]">Fight!</button>
+                    </div>
+                    -->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

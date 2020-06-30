@@ -1,0 +1,49 @@
+<div id="divcanvas"></div>
+<div style="text-align:center">
+  <div>
+<!--     <webcam [height]="298" [width]="298" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+            [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+            [videoOptions]="videoOptions"
+            [imageQuality]="1"
+            (cameraSwitched)="cameraWasSwitched($event)"
+            (initError)="handleInitError($event)"
+    ></webcam> -->
+
+    <video src="" id="video" width="298" height="298" autoplay muted ></video>
+
+    
+    <!--
+    <br/>
+    <button class="actionBtn btn-primary btn-lg m-2" (click)="triggerSnapshot();">Capturar  Imagen</button>
+    <button class="actionBtn btn-secondary btn-lg m-2" (click)="toggleWebcam();">Mostrar Webcam</button>
+    <br/>
+    -->
+
+    <label for="inputUsername" class="sr-only">Usuario</label>
+    <input [(ngModel)]="credentials.username" type="text" class="form-control my-2" name="username" id="username" placeholder="Usuario" autofocus required>
+    <input *ngIf="!enableLogin" type="submit" class="btn btn-lg btn-primary btn-block mb-2" value="Iniciar sesión" disabled>
+    <input *ngIf="enableLogin" (click)="takeSnap()" type="submit" class="btn btn-lg btn-primary btn-block mb-2" value="Iniciar sesión">
+
+   <!--  DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px"> -->
+  
+  </div>
+</div>
+
+<!--
+<div class="snapshot mb-1 fade-in-top text-shadow font-text text-white" *ngIf="webcamImage">
+  <h2>Captura:</h2>
+  <img id="snapshot" [src]="webcamImage.imageAsDataUrl"/>
+</div>
+
+<div *ngIf="webcamImage">
+  <div class="font-text text-white">Imagen en base 64:</div>
+  <p  class="bg-dark mb-5 ml-3 mr-3 text-white">{{webcamImage.imageAsBase64}}</p>
+</div>
+-->
+
+<!-- <form method="POST" name="form" id="form"  *ngIf="webcamImage" class="mb-5 col-12 ">
+  <textarea name="base64" id="base64">{{webcamImage.imageAsBase64}}</textarea>
+  <button type="submit">
+      Enviar imágen
+  </button>
+</form> -->

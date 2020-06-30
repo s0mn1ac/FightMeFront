@@ -1,0 +1,428 @@
+<div class="mt-5">
+
+    <!-- BOOTSTRAP CARD: Título -->
+    <div class="card mt-5 mb-2 mx-5">
+        <div class="card-header">
+            <h5 class="card-title title float-left mt-2 font-text" style="font-weight: bolder;">¡Batalla!</h5>
+            <div class="float-right">
+                <div *ngIf="manualFight" title="Reiniciar" class="retorno" (click)="manualFight=!manualFight; cleanMoves2()">
+                    <div style="width: 50px; height: 50px;"><i class="fa fa-repeat" aria-hidden="true"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOTSTRAP CARD: Contenido -->
+    <div class="card mb-5 mx-5">
+
+        <div class="card-body">
+
+            <!-- FILA DE TRES COLUMNAS -->
+            <div class="row no-gutters d-flex">
+
+                <!-- COLUMNA IZQUIERDA: Jugador 1 -->
+                <div class="col-4">
+  
+                    <div class="form-group fade-in-bottom mx-2 my-2">
+                        
+                        <!-- Nombre de usuario del Jugador 1 -->
+                        <label for="juego" class="font-text col-form-label text-white j1">Jugador 1 - {{ userPlayer1 }}</label>
+
+                        <!-- Selector de personaje del Jugador 1 -->
+                        <div *ngIf="!manualFight else choosenBlock">
+                            <select (click)="updateImg(character)" [compareWith]="compareCharacters"
+                                class="form-control jugador1" [(ngModel)]="character1" name="char1" required>
+                                <option *ngFor="let character of characters | filterCharacterUser: userPlayer1" [ngValue]="character">
+                                    {{ character.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Cuando pasamos al modo de batalla manual se bloquean los selectores de personajes -->
+                        <ng-template #choosenBlock>
+                            <div class="col pt-2 pb-2 rounded w-100 choose1 fade-in-fwd text-center">
+                                <div class="row d-flex">
+                                    <div class="flex-grow-1">
+                                        {{character1.name}}
+                                    </div>
+                                    <div class="mr-3">
+                                        <i class="fa fa-lock" aria-hidden="true"></i>
+                                        <!--<img src="/assets/img/lock.ico" alt="lock" class="candado">-->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <!-- Imagen y HP del personaje (Los HP solo se muestran una vez haya iniciado el combate) -->
+                        <div class="mt-2 fade-in-left" style="text-align: center;">
+
+                            <div *ngIf="manualFight" class="row no-gutters">
+
+                                <img src="/assets/img/confeti.gif" alt="" class="confeti" *ngIf="player2Dead">
+                                <img src="/assets/img/ghost.gif" alt="" class="ghost" *ngIf="player1Dead">
+                                
+                                <div class="col-4">
+                                    
+                                    <div class="hp hp1 font-text fade-in-top mr-1" style="cursor: default; height: 26px;">
+                                        <div *ngIf="player1HP > 25" class="progress flex-fill h-100">
+                                            <div class="progress-bar bg-success"
+                                                role="progressbar1" aria-valuemin="0" aria-valuemax=""
+                                                [style.width]="player1HP + '%'"></div>
+                                        </div>
+                                        <div *ngIf="player1HP <= 25 && player1HP > 10" class="progress flex-fill h-100">
+                                            <div class="progress-bar bg-warning"
+                                                role="progressbar1" aria-valuemin="0" aria-valuemax=""
+                                                [style.width]="player1HP + '%'"></div>
+                                        </div>
+                                        <div *ngIf="player1HP <= 10" class="progress flex-fill h-100">
+                                            <div class="progress-bar bg-danger"
+                                                role="progressbar1" aria-valuemin="0" aria-valuemax=""
+                                                [style.width]="player1HP + '%'"></div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="character1?.characterRol" class="fade-in-top mt-2 mr-1">
+                                        <img class="img-thumbnail rounded small-pic-p1"
+                                            src="http://localhost:8090/character/uploads/img/{{ character1.characterRol.characterRolName }}.png"
+                                            id="update-img" alt="{{ character1.characterRol.characterRolName }}">
+                                    </div>
+                                    
+                                    <div *ngIf="!character1?.characterRol" class="fade-in-top mt-2 ml-2 mr-1">
+                                        <img class="img-thumbnail rounded small-pic-p1" src="http://localhost:8090/imgs/peasant.png" id="update-img" alt="Peasant">
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="col-8">
+
+                                    <div class="skills-container text-center">
+
+                                        <div class="hp hp1 font-text fade-in-top ml-1" style="cursor: default;">
+                                            <span style="cursor: default;"> Habilidades </span>
+                                        </div>
+
+                                        <ul class="mt-2 ml-1">
+                                            <div *ngFor="let skill of skills | filterRol: character1.characterRol.characterRolName">
+                                                <li (click)='globalService.playAudioClick(); controlLucha(skill)' (mouseover)='globalService.playAudio()' class="mb-1 skill-enabled swing-in-top-fwd">
+                                                    {{ skill.name}}: {{skill.quantity}}
+                                                    <img src="/assets/img/{{skill.action.toLowerCase()}}.ico"
+                                                        title="{{skill.action.toLowerCase()}}" class="col-1 ico p-0" alt="">
+                                                </li>
+                                            </div>
+                                        </ul>
+                
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Revisar -->
+                            <img src="/assets/img/confeti.gif" alt="" class="confeti" *ngIf="player2Dead && !manualFight">
+                            <img src="/assets/img/ghost.gif" alt="" class="ghost" *ngIf="player1Dead && !manualFight">
+
+                            <img *ngIf="character1?.characterRol && !manualFight" class="mt-4 mb-3 img-shadow"
+                                src="http://localhost:8090/character/uploads/img/{{ character1.characterRol.characterRolName }}.png"
+                                id="update-img" style="width: 80%; height: 80%;" alt="{{ character1.characterRol.characterRolName }}">
+                            
+                            <img *ngIf="!character1?.characterRol && !manualFight" class="mt-4 mb-3 img-shadow"
+                                src="http://localhost:8090/imgs/peasant.png" id="update-img" style="width: 80%; height: 80%;" alt="Peasant">    
+
+                        </div>
+
+                    </div>    
+
+                </div>
+
+
+                <!-- COLUMNA CENTRAL: BOTÓN VS / LOG MOVIMIENTOS -->
+                <div class="col-4 cn flex-fill" style="text-align: center;">
+                    
+                    <!-- BOTÓN VS -->
+                    <div class="luchar zoom" *ngIf="!chooseMode">
+                        <input type="image" class="zoom bg-style" title="¡Comenzar Batalla!"
+                            src="../../assets/img/vs1.png" name="saveForm" (click)="check()" class="btTxt submit"
+                            id="saveForm" style="width: 100%; height: 100%;" />
+                    </div>
+
+                    <!-- LOG MOVIMIENTOS: Elegir modo de Batalla (Automática o manual) -->
+                    <div *ngIf="chooseMode && !manualFight" class="">
+                        
+                        <div class="text-white fade-in-fwd" id="modos" (mouseover)='globalService.playAudio()'>
+                            <div (click)="luchar()">Modo Automático</div>
+                            <div (click)="activeManualFight()">Modo Manual</div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- LOG MOVIMIENTOS: Jugada Automatica -->
+                    <div *ngIf="movesPlayer1 || movesPlayer2" class="container-moves fade-in-fwd rounded">
+
+                        <div class="sticky-top header">
+                            <div class="moves font-text" style="cursor: default;">
+                                Movimientos
+                                <button type="button" class="close text-white" aria-label="Close" style="cursor: pointer;">
+                                    <span aria-hidden="true" (click)='cleanMoves()'>&times;</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+
+                            <div class="moves" *ngFor="let skill of allMoves; let i = index;" [attr.data-index]="i" style="cursor: default; padding-left: 10px; padding-right: 10px;">
+
+                                <!-- Si el jugador1 es el más rápido -->
+                                <div *ngIf="character1First else Character2Faster">
+
+                                    <div *ngIf="i%2==0" class="d-flex mx-1 my-1">
+                                        <div class="span img-shadow moves1 fade-in-left col-10">
+                                            <span class="text-shadow">{{skill.name}}: {{skill.quantity}}</span>
+                                            <img src="/assets/img/{{skill.action.toLowerCase()}}.ico"
+                                                title="{{skill.action.toLowerCase()}}" class="col-2 ico p-0" alt="">
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="i%2==1" class="d-flex flex-row-reverse mx-1 my-1">
+                                        <div class="span img-shadow moves2 fade-in-right col-10">
+                                            <span class="text-shadow">{{skill.name}}: {{skill.quantity}}</span>
+                                            <img src="/assets/img/{{skill.action.toLowerCase()}}.ico"
+                                                title="{{skill.action.toLowerCase()}}" class="col-2 ico p-0" alt="">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Si el jugador2 es el más rápido -->
+                                <ng-template #Character2Faster>
+
+                                    <div *ngIf="i%2==0" class="d-flex flex-row-reverse  mx-1 my-1">
+                                        <div class="span img-shadow moves2 fade-in-left col-10">
+                                            <span class="text-shadow">{{skill.name}}: {{skill.quantity}}</span>
+                                            <img src="/assets/img/{{skill.action.toLowerCase()}}.ico"
+                                                title="{{skill.action.toLowerCase()}}" class="col-2 ico p-0" alt="">
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="i%2==1" class="d-flex mx-1 my-1">
+                                        <div class="span img-shadow moves1 fade-in-right col-10">
+                                            <span class="text-shadow">{{skill.name}}: {{skill.quantity}}</span>
+                                            <img src="/assets/img/{{skill.action.toLowerCase()}}.ico"
+                                                title="{{skill.action.toLowerCase()}}" class="col-2 ico p-0" alt="">
+                                        </div>
+                                    </div>
+
+                                </ng-template>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- LOG MOVIMIENTOS: Jugada Manual -->
+                    <div *ngIf="moveUser1 && manualFight" class="container-moves fade-in-fwd rounded" style="text-align: center;" #scrollMe>
+                                        
+                        <div class="sticky-top header">
+                            <div class="font-text" style="cursor: default;">
+                                Movimientos
+                                <button type="button" class="float-right close text-white" aria-label="Close" style="cursor: pointer;">
+                                    <span aria-hidden="true" (click)='cleanMoves2()'>&times;</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-2" *ngIf="movesControlFight.length > 0" style="cursor: default;">
+                    
+                            <div *ngFor="let round of movesControlFight">
+
+                                <div class="round-container">
+
+                                    <h5 class="text-white round-text">Ronda: {{round.i}}</h5>
+
+                                    <div class="d-flex mx-1 my-1">
+                                        <div class="fade-in-left img-shadow">
+                                            <div class="moves1">
+                                                <span class="text-shadow"> {{round.movePlayer1.name}}: {{round.movePlayer1.quantity}} </span>
+                                                <img src="/assets/img/{{round.movePlayer1.action.toLowerCase()}}.ico"
+                                                    title="{{round.movePlayer1.action.toLowerCase()}}" class="col-2  ico p-0" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row-reverse mx-1 my-1">
+                                        <div class="fade-in-right img-shadow">
+                                            <div class="moves2">
+                                                <span class="text-shadow"> {{round.movePlayer2.name}}: {{round.movePlayer2.quantity}} </span>
+                                                <img src="/assets/img/{{round.movePlayer2.action.toLowerCase()}}.ico"
+                                                    title="{{round.movePlayer2.action.toLowerCase()}}" class="col-2  ico p-0" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Player 2 Stats 
+                                <div *ngIf="player2HP <= 25 && player2HP > 10" class="round-container">
+
+                                    <span class="text-white font-text stat-text">"¡{{character2.name}}</span>
+                                    <span class="text-white font-text stat-text"> está contra las cuerdas!"</span>
+
+                                </div>
+
+                                <div *ngIf="player2HP <= 10" class="round-container">
+
+                                    <span class="text-white font-text stat-text">"¡{{character2.name}}</span>
+                                    <span class="text-white font-text stat-text"> está en las últimas!"</span>
+
+                                </div>
+                                -->
+                                <!-- Player 1 Stats 
+                                <div *ngIf="player1HP <= 25 && player1HP > 10" class="round-container">
+
+                                    <span class="text-white font-text stat-text">"¡Cuidado! ¡Estás muy mal de salud!"</span>
+
+                                </div>
+                                
+                                <div *ngIf="player1HP <= 10" class="round-container">
+
+                                    <span class="text-white font-text stat-text">"¡Estás a punto de desfallecer!"</span>
+
+                                </div>
+                                -->
+                                
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: Jugador 2 -->
+                <div class="col-4">
+
+                    <div class="form-group fade-in-bottom mx-2 my-2">
+
+                        <!-- Nombre de usuario del Jugador 2 -->
+                        <label *ngIf="character2?.characterRol" for="juego" class="font-text col-form-label text-white j2 d-flex justify-content-end">
+                            {{ updateUserPlayer2(character2) }}
+                            {{ userPlayer2 }} Jugador 2
+                        </label>
+
+                        <label *ngIf="!character2?.characterRol" for="juego" class="font-text col-form-label text-white j2 d-flex justify-content-end">
+                            Jugador 2
+                        </label>
+
+                        <!-- Selector de personaje del Jugador 2 -->
+                        <div *ngIf="!manualFight else choosenBlock2">
+                            <select class="form-control jugador2" [(ngModel)]="character2" name="char2" required>
+                                <option *ngFor="let character of characters | filterCharacterUserReverse: userPlayer1" [ngValue]="character">
+                                    {{ character.name }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Cuando pasamos al modo de batalla manual se bloquean los selectores de personajes -->
+                        <ng-template #choosenBlock2>
+                            <div class="col pt-2 pb-2 rounded w-100 choose2 fade-in-fwd text-center">
+                                <div class="row d-flex">
+                                    <div class="flex-grow-1">
+                                        {{character2.name}}
+                                    </div>
+                                    <div class="mr-3">
+                                        <i class="fa fa-lock" aria-hidden="true"></i>
+                                        <!--<img src="/assets/img/lock.ico" alt="lock" class="candado">-->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <!-- Imagen y HP del personaje (Los HP solo se muestran una vez haya iniciado el combate) -->
+                        <div class="mt-2 fade-in-left" style="text-align: center;">
+
+                            <div *ngIf="manualFight" class="row no-gutters">
+
+                                <img src="/assets/img/confeti.gif" alt="" class="confeti" *ngIf="player1Dead">
+                                <img src="/assets/img/ghost.gif" alt="" class="ghost" *ngIf="player2Dead">
+
+                                <div class="col-8">
+
+                                    <div class="skills-container text-center">
+
+                                        <div class="hp hp2 font-text fade-in-top mr-1" style="cursor: default;">
+                                            <span style="cursor: default;"> Habilidades </span>
+                                        </div>
+
+                                        <ul class="mt-2 mr-1">
+                                            <div *ngFor="let skill of skills | filterRol: character2.characterRol.characterRolName">
+                                                <li class="mb-1 skill-disabled swing-in-top-fwd">
+                                                    {{ skill.name}}: {{skill.quantity}}
+                                                    <img src="/assets/img/{{skill.action.toLowerCase()}}.ico"
+                                                        title="{{skill.action.toLowerCase()}}" class="col-1 ico p-0" alt="">
+                                                </li>
+                                            </div>
+                                        </ul>
+                
+                                    </div>
+
+                                </div>
+                                
+                                <div class="col-4">
+                                    
+                                    <div class="hp hp2 font-text fade-in-top ml-1" style="cursor: default; height: 26px;">
+                                        <div *ngIf="player2HP > 25" class="progress flex-fill h-100">
+                                            <div class="progress-bar bg-success"
+                                                role="progressbar1" aria-valuemin="0" aria-valuemax=""
+                                                [style.width]="player2HP + '%'"></div>
+                                        </div>
+                                        <div *ngIf="player2HP <= 25 && player2HP > 10" class="progress flex-fill h-100">
+                                            <div class="progress-bar bg-warning"
+                                                role="progressbar1" aria-valuemin="0" aria-valuemax=""
+                                                [style.width]="player2HP + '%'"></div>
+                                        </div>
+                                        <div *ngIf="player2HP <= 10" class="progress flex-fill h-100">
+                                            <div class="progress-bar bg-danger"
+                                                role="progressbar1" aria-valuemin="0" aria-valuemax=""
+                                                [style.width]="player2HP + '%'"></div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="character2?.characterRol" class="fade-in-top mt-2 ml-1">
+                                        <img class="img-thumbnail rounded small-pic-p2"
+                                            src="http://localhost:8090/character/uploads/img/{{ character2.characterRol.characterRolName }}.png"
+                                            id="update-img" alt="{{ character2.characterRol.characterRolName }}">
+                                    </div>
+                                    
+                                    <div *ngIf="!character2?.characterRol" class="fade-in-top mt-2 ml-1">
+                                        <img class="img-thumbnail rounded small-pic-p2" src="http://localhost:8090/imgs/peasant.png" id="update-img" alt="Peasant">
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                            
+
+                            <!-- Revisar -->
+                            <img src="/assets/img/confeti.gif" alt="" class="confeti" *ngIf="player1Dead && !manualFight">
+                            <img src="/assets/img/ghost.gif" alt="" class="ghost" *ngIf="player2Dead && !manualFight">
+
+                            <img *ngIf="character2?.characterRol && !manualFight" class="mt-4 mb-3 img-shadow"
+                                src="http://localhost:8090/character/uploads/img/{{ character2.characterRol.characterRolName }}.png"
+                                id="update-img" style="width: 80%; height: 80%;" alt="{{ character2.characterRol.characterRolName }}">
+                            
+                            <img *ngIf="!character2?.characterRol && !manualFight" class="mt-4 mb-3 img-shadow"
+                                src="http://localhost:8090/imgs/peasant.png" id="update-img" style="width: 80%; height: 80%;" alt="Peasant">    
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,76 @@
+<audio src="/assets/mp3/blup.mp3" preload></audio>
+<nav class="font-text navbar navbar-expand-lg navbar-dark bg-dark shadow-lg sticky-top">
+  <a class="navbar-brand audio" routerLink="/userinterface">
+    <img src="http://localhost:8090/imgs/spell_scroll.png" style="width: 30px;" alt="{{title}}" class="img-shadow">
+    <span class="text-shadow">{{title}}</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <ul class="navbar-nav mr-auto">
+
+      <li *ngIf="authService.isAuthenticated()" class="nav-item " routerLinkActive="active">
+        <a class="nav-link audio" routerLink="/userinterface"><i class="fas fa-gamepad tablero"></i>  Tablero</a>
+      </li>
+
+      <li *ngIf="authService.isAuthenticated()" class="nav-item" routerLinkActive="active">
+        <a *ngIf="authService.hasRole('ROLE_ADMIN')" class="nav-link audio" routerLink="/users/page/0"><i class="fas fa-users usuarios"></i>  Usuarios</a>
+      </li>
+
+      <li *ngIf="authService.isAuthenticated()" class="nav-item" routerLinkActive="active">
+        <a *ngIf="authService.hasRole('ROLE_ADMIN')" class="nav-link audio" routerLink="/characters/page/0"><i class="fas fa-user-ninja personajes"></i>  Personajes</a>
+      </li>
+
+      <li *ngIf="authService.isAuthenticated()" class="nav-item" routerLinkActive="active">
+        <a *ngIf="authService.hasRole('ROLE_ADMIN')" routerLink="/skills/page/0" class="nav-link audio"><i class="fas fa-book skills"></i>  Habilidades</a>
+      </li>
+
+      <li *ngIf="authService.isAuthenticated()" class="nav-item" routerLinkActive="active">
+        <a class="nav-link audio" routerLink="/characters/rol"><i class="fas fa-info-circle info"></i>  Información</a>
+      </li>
+
+      <li *ngIf="authService.isAuthenticated()" class="nav-item" routerLinkActive="active">
+        <a class="nav-link audio" routerLink="/battle"><i class="fas fa-fist-raised batalla"></i>  Batalla</a>
+      </li>
+      
+
+    </ul>
+
+  
+    <i class="fas fa-volume-up text-white ico" *ngIf="globalService.soundOn" (click)='globalService.desactiveSound(); autoPlay()' title="Desactivar sonido"></i>
+    <i class="fas fa-volume-mute text-white ico" *ngIf="!globalService.soundOn" (click)='globalService.activeSound(); autoPlay()' title="Activar sonido"></i>
+    <ul class="navbar-nav navbar-right">
+
+      <li *ngIf="!authService.isAuthenticated()">
+        <a routerLink="/login" class="btn btn-outline-dark text-white" role="button">
+          <i class="fas fa-sign-in-alt mr-2"></i>
+          Iniciar sesión
+        </a>
+      </li>
+
+      <li *ngIf="authService.isAuthenticated()" class="dropdown text-white">
+        <a class="btn btn-outline-dark dropdown-toggle text-white audio" href="#" role="button" id="dropdownMenuLink"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img *ngIf="authService.hasRole('ROLE_ADMIN')" src="http://localhost:8090/imgs/king.png" class="rounded vd img-shadow"
+            style="width: 30px; height: 30px;" alt="admin">
+          <img *ngIf="authService.hasRole('ROLE_USER')" src="http://localhost:8090/imgs/peasant.png" class="rounded vd img-shadow"
+            style="width: 30px; height: 30px;" alt="user">
+          {{authService.credentials.name}}
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+          <button (click)="logout()" class="dropdown-item" type="submit">
+            <i class="fas fa-sign-out-alt mr-2"></i>
+            Cerrar sesión
+          </button>
+        </div>
+      </li>
+
+    </ul>
+
+  </div>
+
+</nav>

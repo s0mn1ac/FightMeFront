@@ -1,0 +1,38 @@
+canvas{
+  position: absolute;
+}
+.return{
+font-size: 40px;
+display: inline-block;
+padding: 10px;
+}
+
+input[type="text"] {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+  
+.actionBtn {
+  margin-top: 5px;
+  margin-bottom: 2px;
+  font-size: 1.2em;
+}
+
+.snapshot {
+  text-align: center;
+}
+
+img{
+  max-width: 800px;
+  max-height: 800px;
+
+}
+
+#snapshot{
+  max-width: 300px;
+  max-height: 300px;
+}
+
